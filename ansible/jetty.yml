@@ -40,7 +40,7 @@
      copy: src=jetty/jetty dest=/etc/default/jetty
      
    - name: copy war
-     copy:src: "{{ item }}" dest: /opt/jetty/webapps
+     copy: src="{{item}}" dest=/opt/jetty/webapps
      with_fileglob:
        - /root/.jenkins/war2dep/*
      
