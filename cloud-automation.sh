@@ -56,6 +56,7 @@ runTerraform() {
     echo "Waiting for AWS resources ...."
     sleep 85
     cd ..
+    cp terraform-aws/terraform.tfstate /tmp
     sh hosts_file_gen.sh >./ansible/hosts
     cd ./terraform-aws
     elb_be=`terraform output elb_dns_name_BE`
