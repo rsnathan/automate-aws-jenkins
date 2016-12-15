@@ -38,7 +38,11 @@
    - name: configure jetty
      tags: jetty
      copy: src=jetty/jetty dest=/etc/default/jetty
-
+     
+   - name: copy war
+     tags: jetty
+     copy: src=/root/.jenkins/war2dep/*.war dest=/opt/jetty/webapps
+     
    - name: generate password for jetty
      tags: jetty
      shell: 'openssl rand -base64 24 | sed "s/[+=\/:]//g"'
