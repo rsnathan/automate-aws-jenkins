@@ -1,0 +1,24 @@
+- hosts: webserver
+  become: true
+  become_user: root
+  remote_user: ubuntu
+  tasks:
+    - name: Installs nginx web server
+      apt: pkg=nginx state=installed update_cache=true
+      notify:
+        - start nginx
+    - name: write the nginx server config file
+      template: src=../nginx/nginx.conf dest=/etc/nginx/nginx.conf
+
+    - name: write the nginx proxy config file
+      template: src=../nginx/proxy.conf dest=/etc/nginx/conf.d/proxy.conf
+      notify:
+        - restart nginx
+
+  handlers:
+    - name: start nginx
+      service: name=nginx state=started
+    - name: restart nginx
+      service: name=nginx state=restarted
+
+

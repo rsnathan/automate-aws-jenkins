@@ -1,0 +1,7 @@
+JAVA_HOME=/usr/bin/java
+NO_START=0 # Start on boot
+JETTY_HOST=0.0.0.0 # Listen to all hosts
+JETTY_USER=jetty # Run as this user
+JETTY_ARGS=jetty.port=8080
+JETTY_HOME=/opt/jetty
+

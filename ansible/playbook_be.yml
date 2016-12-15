@@ -1,0 +1,6 @@
+- hosts: appserver
+  become: true
+  become_user: root
+  remote_user: ubuntu
+- include : java.yml
+- include : jetty.yml

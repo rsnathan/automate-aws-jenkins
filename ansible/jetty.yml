@@ -1,0 +1,66 @@
+- hosts: appserver
+  become: true
+  become_user: root
+  remote_user: ubuntu
+  vars:
+     jetty_version: 9.3.14.v20161028 
+     src_jetty_path: jetty-distribution-{{jetty_version}}
+     jetty_archive_path: "{{src_jetty_path}}.tar.gz"
+     jetty_download_url: http://central.maven.org/maven2/org/eclipse/jetty/jetty-distribution/{{jetty_version}}/{{jetty_archive_path}}
+
+  tasks:
+   - name: add jetty group
+     tags: user
+     group: name=jetty
+
+   - name: add jetty user
+     tags: user
+     user: name=jetty group=jetty shell=/bin/false createhome=no
+
+   - name: download jetty
+     tags: jetty
+     get_url: url={{jetty_download_url}} dest=/tmp
+
+   - name: extract jetty archive
+     tags: jetty
+     command: tar -xf {{jetty_archive_path}} chdir=/tmp
+
+   - name: copy jetty to destination directory
+     tags: jetty
+     command: mv /tmp/{{src_jetty_path}} /opt/jetty
+
+   - name: make jetty owner of jetty home
+     tags: jetty
+     command: "{{item}}"
+     with_items:
+       - cp -a /opt/jetty/bin/jetty.sh /etc/init.d/jetty
+
+   - name: configure jetty
+     tags: jetty
+     copy: src=jetty/jetty dest=/etc/default/jetty
+
+   - name: generate password for jetty
+     tags: jetty
+     shell: 'openssl rand -base64 24 | sed "s/[+=\/:]//g"'
+     register: jetty_password
+
+
+   - name: jetty webdefault.xml copy
+     tags: jetty
+     copy: src=jetty/webdefault.xml dest=/opt/jetty/etc/webdefault.xml
+
+   - name: make jetty autostart on reboot
+     tags: jetty
+     command: "{{item}}"
+     with_items:
+      - echo JETTY_HOME >> ~/.profile && source ~/.profile
+      - update-rc.d jetty defaults
+   - name: chown all dirs
+     tags: jetty
+     command: "{{item}}"
+     with_items:
+       - chown -R jetty:jetty /opt/jetty
+   - name: start jetty
+     tags: jetty
+     command: sudo service jetty start
+     
