@@ -40,8 +40,9 @@
      copy: src=jetty/jetty dest=/etc/default/jetty
      
    - name: copy war
-     tags: jetty
-     command: cp /root/.jenkins/war2dep/*.war /opt/jetty/webapps
+     copy:src: "{{ item }}" dest: /opt/jetty/webapps
+     with_fileglob:
+       - /root/.jenkins/war2dep/*
      
    - name: generate password for jetty
      tags: jetty
