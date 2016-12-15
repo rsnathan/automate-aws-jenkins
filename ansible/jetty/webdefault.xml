@@ -512,25 +512,4 @@
       <encoding>Big5</encoding>
     </locale-encoding-mapping>
   </locale-encoding-mapping-list>
-
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>Disable TRACE</web-resource-name>
-      <url-pattern>/</url-pattern>
-      <http-method>TRACE</http-method>
-    </web-resource-collection>
-    <auth-constraint/>
-  </security-constraint>
-  <security-constraint>
-    <web-resource-collection>
-      <url-pattern>/*</url-pattern>
-    </web-resource-collection>
-    <auth-constraint>
-      <role-name>admin</role-name>
-    </auth-constraint>
-  </security-constraint>
-  <login-config>
-    <auth-method>BASIC</auth-method>
-    <realm-name>Test Realm</realm-name>
-  </login-config>
 </web-app>
