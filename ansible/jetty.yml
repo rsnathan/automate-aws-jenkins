@@ -41,7 +41,7 @@
      
    - name: copy war
      tags: jetty
-     copy: src=/root/.jenkins/war2dep/*.war dest=/opt/jetty/webapps
+     command: cp /root/.jenkins/war2dep/*.war /opt/jetty/webapps
      
    - name: generate password for jetty
      tags: jetty
