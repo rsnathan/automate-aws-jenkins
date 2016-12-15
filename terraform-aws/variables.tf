@@ -42,7 +42,7 @@ variable beinstance_type {
 }
 
 variable public_key_path {
- default = "/home/rahul/.ssh/terraform.pub"
+ default = "/root/.jenkins/.ssh/terraform.pub"
 }
 
 variable key_name {
