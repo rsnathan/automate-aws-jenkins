@@ -63,8 +63,8 @@ runTerraform() {
     sed -i "s/backendlb/$elb_be/g" nginx/proxy.conf
     cd ./ansible
     
-    ansible-playbook -i hosts -l webserver playbook_fe.yml 
-    ansible-playbook -i hosts -l appserver playbook_be.yml
+    ansible-playbook -i hosts -l webserver playbook_fe.yml --private-key=/root/.jenkins/.ssh/terraform
+    ansible-playbook -i hosts -l appserver playbook_be.yml --private-key=/root/.jenkins/.ssh/terraform
     cd ..
     cd ./terraform-aws
     echo "Please access your application at ---->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
