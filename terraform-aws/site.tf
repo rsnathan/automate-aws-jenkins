@@ -77,7 +77,7 @@ module "elb_BE" {
 
 module "ec2_FE" {
         source = "./modules/ec2"
-        name = "${var.name}-${var.application_FE}}"
+        name = "${var.name}-${var.application_FE}"
         environment = "${var.environment}"
         security_groups = "${module.elb_sg.elb_sg_id},${module.app_sg.app_sg_id}"
         instance_type = "${var.feinstance_type}"
@@ -100,6 +100,26 @@ module "ec2_BE" {
         count ="${var.becount}"
         ami_id = "${var.ami_id}"
         subnets = "${module.vpc_subnets.public_subnets_id}"
+
+
+}
+module "asg_FE" {
+        source = "./modules/asg"
+        name = "${var.name}-${var.application_FE}-asg"
+        environment = "${var.environment}"
+        ami_id = "${var.ami_id}"
+        instance_type = "${var.feinstance_type}"
+        security_groups = "${module.elb_sg.elb_sg_id},${module.web_sg.web_sg_id}"
+        loadbalancers = "${module.elb_FE.elb.id}
+
+module "asg_BE" {
+        source = "./modules/asg"
+        name = "${var.name}-${var.application_BE}-asg"
+        environment = "${var.environment}"
+        ami_id = "${var.ami_id}"
+        instance_type = "${var.beinstance_type}"
+        security_groups = "${module.elb_sg.elb_sg_id},${module.app_sg.web_sg_id}"
+        loadbalancers = "${module.elb_BE.elb.id}
 
 
 }
